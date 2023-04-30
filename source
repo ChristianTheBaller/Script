@@ -12,6 +12,7 @@ if game.PlaceId == 6284583030 then -- pet sim x --
     _G.autoEnd = false
     _G.autoBuy = false
     _G.selectChest = "Common Chest"
+    _G.chestDelay = ""
 
 	-- Functions
 
@@ -183,6 +184,16 @@ local teleportTable = {
     local function teleport(position)
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position)
     end
+    -- function to delay chest opening
+        function chestDelay()
+            while _G.chestDelay == true do
+                function chestDelay()
+                    local delaySeconds = AutoBuyTab:GetSlider("Delay").Value
+                    wait(delaySeconds)
+                end
+              end  
+            end
+
     -- Function to auto buy chest
     function autoBuy()
         while _G.autoBuy == true do   
@@ -254,6 +265,22 @@ local teleportTable = {
             print(_G.selectChest)
         end    
     })
+
+    -- slider
+    
+    AutoBuyTab:AddSlider({
+	Name = "Delay",
+	Min = 0.1,
+	Max = 2,
+	Default = 1,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = .5,
+	ValueName = "seconds",
+	Callback = function(Value)
+		_G.chestDelay = Value
+        chestDelay()
+	end    
+})
 
     OrionLib:Init()
 end
