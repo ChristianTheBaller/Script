@@ -194,7 +194,7 @@ local teleportTable = {
                     break
                 end
                 teleport(position)
-                wait(.8)
+                wait(1.2)
                 if i == 1 then
                     workspace.BlackZone.VoteLaunchRE:FireServer()
                 end
