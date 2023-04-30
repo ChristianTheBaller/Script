@@ -208,14 +208,14 @@ local teleportTable = {
     
     -- Create tab in Orion Hub UI
     local AutoTab = Window:MakeTab({
-        Name = "Auto Teleport",
+        Name = "Auto things",
         Icon = "rbxassetid://0",
         PremiumOnly = false
     })
     
     -- Add toggle to Auto Tab
     AutoTab:AddToggle({
-        Name = "Auto Teleport",
+        Name = "Auto go to end",
         Default = false,
         Callback = function(Value)
             autoTeleport(Value)
