@@ -10,11 +10,12 @@ if game.PlaceId == 6284583030 then -- pet sim x --
     _G.lootBagRange = 50 -- set the loot bag range
     _G.disableEggAnimation = false
     _G.autoEnd = false
+    _G.autoBuy = false
+    _G.selectChest = "Common Chest"
 
 	-- Functions
 
-	-- Function to auto hatch
-
+	
 
 	    
 
@@ -165,8 +166,6 @@ elseif game.PlaceId == 537413528 then -- build a boat --
     local Window = OrionLib:MakeWindow({Name = "Christian's Build a boat script", HidePremium = false, IntroEnabled = false, IntroText = "Christian's Build a boat script", SaveConfig = true, ConfigFolder = "Christian's PSX Script"})
     
     -- teleport table
-    -- Define teleport positions as Vector3s
--- Define teleport positions as Vector3s
 local teleportTable = {
     Vector3.new(82.8071518, -5.15716267, 1694.99219, -0.522621632, 0.351851225, -0.776574135, 0.0328280926, 0.918497682, 0.394061357, 0.851932466, 0.180451527, -0.491577327),
     Vector3.new(163.022614, -3.97979164, 2464.56128, 0.829036474, -0, -0.559194624, 0, 1, -0, 0.559194624, 0, 0.829036474),
@@ -184,7 +183,14 @@ local teleportTable = {
     local function teleport(position)
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position)
     end
-    
+    -- Function to auto buy chest
+    function autoBuy()
+        while _G.autoBuy == true do   
+        workspace.ItemBoughtFromShop:InvokeServer(_G.selectChest,1) 
+        wait(1)
+        end            
+    end
+
     -- Define callback function for Orion Hub toggle
     local function autoTeleport(enabled)
         while enabled do
@@ -194,7 +200,7 @@ local teleportTable = {
                     break
                 end
                 teleport(position)
-                wait(1.2)
+                wait(.8)
                 if i == 1 then
                     workspace.BlackZone.VoteLaunchRE:FireServer()
                 end
@@ -206,22 +212,48 @@ local teleportTable = {
         end
     end
     
-    -- Create tab in Orion Hub UI
-    local AutoTab = Window:MakeTab({
-        Name = "Auto things",
+    -- tab
+    
+    local AutoFarmTab = Window:MakeTab({
+        Name = "Auto farm",
         Icon = "rbxassetid://0",
         PremiumOnly = false
     })
-    
-    -- Add toggle to Auto Tab
-    AutoTab:AddToggle({
-        Name = "Auto go to end",
+
+    local AutoBuyTab = Window:MakeTab({
+        Name = "Auto buy",
+        Icon = "rbxassetid://0",
+        PremiumOnly = false
+    })
+
+    -- toggle
+    AutoFarmTab:AddToggle({
+        Name = "Auto end",
         Default = false,
         Callback = function(Value)
             autoTeleport(Value)
         end
     })
-    
-    -- Initialize Orion Hub
+
+    AutoBuyTab:AddToggle({
+        Name = "Auto buy",
+        Default = false,
+        Callback = function(Value)
+            _G.autoBuy = Value
+            autoBuy()
+        end
+    })
+
+    -- dropdowns
+    AutoBuyTab:AddDropdown({
+        Name = "Select chest",
+        Default = "Common Chest",
+        Options = {"Common Chest", "Uncommon Chest", "Rare Chest", "Epic Chest", "Legendary Chest"},
+        Callback = function(Value)
+            _G.selectChest = Value
+            print(_G.selectChest)
+        end    
+    })
+
     OrionLib:Init()
 end
