@@ -1,0 +1,227 @@
+if game.PlaceId == 6284583030 then -- pet sim x --
+    -- code for PlaceId 6284583030
+    local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+    local Window = OrionLib:MakeWindow({Name = "Christian's PSX Script", HidePremium = false, IntroEnabled = false, IntroText = "Christian's PSX Script", SaveConfig = true, ConfigFolder = "Christian's PSX Script"})
+    
+    -- Values
+    _G.autoCollectOrbs = false
+    _G.autoCollectLootBags = false
+    _G.orbRange = 50 -- set the orb range
+    _G.lootBagRange = 50 -- set the loot bag range
+    _G.disableEggAnimation = false
+    _G.autoEnd = false
+
+	-- Functions
+
+	-- Function to auto hatch
+
+
+	    
+
+    -- Function to collect orbs
+    function autoCollectOrbs()
+        while _G.autoCollectOrbs do
+            local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+            local orbs = game:GetService("Workspace").__THINGS.Orbs:GetChildren()
+            if #orbs > 0 then
+                for _, v in pairs(orbs) do
+                    if (v.Position - playerPosition).Magnitude <= _G.orbRange then
+                        v.CFrame = CFrame.new(playerPosition) -- tp orb to player
+                    end
+                end
+            end
+            wait(0.1) -- decrease the wait time between orb collections
+        end
+    end
+    
+    -- Function to collect loot bags
+    function autoCollectLootBags()
+        while _G.autoCollectLootBags do
+            local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+            local lootBags = game:GetService("Workspace")["__THINGS"].Lootbags:GetChildren()
+            if #lootBags > 0 then
+                for _, v in pairs(lootBags) do
+                    if (v.Position - playerPosition).Magnitude <= _G.lootBagRange then
+                       v.CFrame = CFrame.new(playerPosition)
+                       wait(0.1)
+                    end
+                end
+            end
+            wait(0.1) -- decrease the wait time between loot bag collections
+        end
+    end
+    
+    --funtion to disable egg animation
+    function disableEggAnimation()
+        while _G.disableEggAnimation do 
+            local Original_OpenEgg = nil
+            local OpenEggsScript = getsenv(game.Players.LocalPlayer.PlayerScripts:WaitForChild("Scripts"):WaitForChild("Game"):WaitForChild("Open Eggs"))
+            
+            function SkipEggAnimation()
+                if not Original_OpenEgg then
+                    Original_OpenEgg = OpenEggsScript.OpenEgg
+                end
+                
+                OpenEggsScript.OpenEgg = function()
+                    return true
+                end
+            end
+    
+            function RestoreEggAnimation()
+                if not Original_OpenEgg then return end
+                OpenEggsScript.OpenEgg = Original_OpenEgg
+            end
+        end
+    end
+    
+    
+    -- Tabs 
+    local FarmTab = Window:MakeTab({
+        Name = "Auto Farms",
+        Icon = "rbxassetid://4483345998",
+        PremiumOnly = false
+    })
+    
+	local EggsTab = Window:MakeTab({
+		Name = "Eggs",
+		Icon = "rbxassetid://4483345998",
+		PremiumOnly = false
+	})
+
+	local ConfigTab = Window:MakeTab({
+		Name = "Config",
+		Icon = "rbxassetid://4483345998",
+		PremiumOnly = false
+	})
+    -- Toggles
+    FarmTab:AddToggle({
+        Name = "Collect Orbs",
+        Default = false,
+        Callback = function(Value)
+            _G.autoCollectOrbs = Value
+            autoCollectOrbs()
+        end    
+    })
+    
+    FarmTab:AddToggle({
+        Name = "Collect Loot Bags",
+        Default = false,
+        Callback = function(Value)
+            _G.autoCollectLootBags = Value
+            autoCollectLootBags()
+        end    
+    })
+    
+	EggsTab:AddToggle({
+        Name = "Auto hatch",
+        Default = false,
+        Callback = function(Value)
+            
+
+        end    
+    })
+
+	-- button
+
+	ConfigTab:AddButton({
+		Name = "Save settings",
+		Callback = function()
+				  print("button pressed")
+		  end    
+	})
+
+
+    EggsTab:AddButton({
+		Name = "Disable egg animation",
+		Callback = function()
+				  
+				  
+		  end    
+	})
+
+    -- Sliders
+    FarmTab:AddSlider({
+        Name = "Orb Range",
+        Min = 10,
+        Max = 500,
+        Default = 50,
+        Callback = function(Value)
+            _G.orbRange = Value
+        end
+    })
+    
+    FarmTab:AddSlider({
+        Name = "Loot Bag Range",
+        Min = 10,
+        Max = 500,
+        Default = 50,
+        Callback = function(Value)
+            _G.lootBagRange = Value
+        end
+    })
+
+elseif game.PlaceId == 537413528 then -- build a boat --
+    local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+    local Window = OrionLib:MakeWindow({Name = "Christian's Build a boat script", HidePremium = false, IntroEnabled = false, IntroText = "Christian's Build a boat script", SaveConfig = true, ConfigFolder = "Christian's PSX Script"})
+    
+    -- teleport table
+    -- Define teleport positions as Vector3s
+-- Define teleport positions as Vector3s
+local teleportTable = {
+    Vector3.new(82.8071518, -5.15716267, 1694.99219, -0.522621632, 0.351851225, -0.776574135, 0.0328280926, 0.918497682, 0.394061357, 0.851932466, 0.180451527, -0.491577327),
+    Vector3.new(163.022614, -3.97979164, 2464.56128, 0.829036474, -0, -0.559194624, 0, 1, -0, 0.559194624, 0, 0.829036474),
+    Vector3.new(142.171387, 100.036736, 3163.25952, 0.749091566, -0.21193175, -0.627651811, -0.0110511072, 0.943317354, -0.331708074, 0.662374318, 0.255415976, 0.70428896),
+    Vector3.new(80.4112701, 71.9575119, 3990.75952, -0.9879691, 0.0557530262, -0.144251883, 0.0215689037, 0.973314285, 0.228460178, 0.153139755, 0.222600251, -0.962807),
+    Vector3.new(-47.2543755, 177.392807, 5523.47705, -0.981630564, -0.0176627245, 0.189972118, 0.0280466378, 0.971529663, 0.235251874, -0.188718751, 0.236258522, -0.953187883),
+    Vector3.new(120.902626, 110.031769, 6480.97998, 0.50677079, 0.0861752108, -0.857762933, 0.0201055016, 0.993539214, 0.111694418, 0.861846387, -0.0738492236, 0.501764059),
+    Vector3.new(105.852531, 157.218506, 7094.35254, -0.906426728, 0.0750401095, -0.415643573, 0.0173371099, 0.989871621, 0.140902594, 0.422007114, 0.120511815, -0.898547113),
+    Vector3.new(140.075989, 45.9077339, 8022.65723, -0.814197719, 6.23339886e-08, -0.580587745, 9.11424181e-09, 1, 9.45820773e-08, 0.580587745, 7.17168902e-08, -0.814197719),
+    Vector3.new(84.5569534, 165.499039, 8612.39941, -0.409872144, 0.351477057, -0.841705799, 0.0319121853, 0.927739024, 0.371862799, 0.911584556, 0.12555553, -0.39147079),
+    Vector3.new(-54.710289, -348.267395, 9492.64062, -0.99917227, 0.0158582609, 0.0374599323, 0.0244476497, 0.970116138, 0.241406173, -0.0325122029, 0.242122173, -0.969700873)
+}
+
+-- Define teleport function
+    local function teleport(position)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position)
+    end
+    
+    -- Define callback function for Orion Hub toggle
+    local function autoTeleport(enabled)
+        while enabled do
+            for i = 1, #teleportTable do
+                local position = teleportTable[i]
+                if not position then
+                    break
+                end
+                teleport(position)
+                wait(.8)
+                if i == 1 then
+                    workspace.BlackZone.VoteLaunchRE:FireServer()
+                end
+                if not enabled then -- check if toggle is still on
+                    return -- instantly break the loop and stop auto teleportation
+                end
+            end
+            wait(16) -- wait 16 seconds before repeating the loop
+        end
+    end
+    
+    -- Create tab in Orion Hub UI
+    local AutoTab = Window:MakeTab({
+        Name = "Auto Teleport",
+        Icon = "rbxassetid://0",
+        PremiumOnly = false
+    })
+    
+    -- Add toggle to Auto Tab
+    AutoTab:AddToggle({
+        Name = "Auto Teleport",
+        Default = false,
+        Callback = function(Value)
+            autoTeleport(Value)
+        end
+    })
+    
+    -- Initialize Orion Hub
+    OrionLib:Init()
+end
